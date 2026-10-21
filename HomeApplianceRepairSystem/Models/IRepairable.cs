@@ -8,5 +8,8 @@ namespace HomeApplianceRepairSystem.Models
 {
     internal class IRepairable
     {
+        decimal CalculateRepairCost();
+        void StartRepair();
+        void CompleteRepair();
     }
 }
