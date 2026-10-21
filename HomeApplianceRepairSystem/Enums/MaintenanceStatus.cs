@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using HomeApplianceRepairSystem.Enums;
 
 namespace HomeApplianceRepairSystem.Enums
 {
-    internal class MaintenanceStatus
+    public enum MaintenanceStatus
     {
+        Received, InMaintenance, Repaired
     }
 }
