@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace HomeApplianceRepairSystem.Models
 {
-    internal class IRepairable
+    public interface IRepairable
     {
         decimal CalculateRepairCost();
         void StartRepair();

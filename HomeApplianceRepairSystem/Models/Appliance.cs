@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 
-namespace HomeApplicancerepairSystem.Models
+namespace HomeApplianceRepairSystem.Models
 {
     public abstract class Appliance : IRepairable
     {
