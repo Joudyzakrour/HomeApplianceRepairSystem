@@ -112,72 +112,84 @@ namespace HomeApplianceRepairSystem
             Console.Write("Problem Description: ");
             string problem = Console.ReadLine();
 
-            Console.Write("Additional Cost: ");
+            decimal specificCost;
+            decimal laborCost;
+            decimal additionalCost;
 
-            if (!decimal.TryParse(Console.ReadLine(), out decimal additionalCost)
-                || additionalCost < 0)
-            {
-                Console.WriteLine("Invalid additional cost.");
-                Pause();
-                return;
-            }
-
-            Appliance appliance; switch (type)
+            switch (type)
             {
                 case "1":
-                    Console.Write("Compressor Cost: ");
-                    if (!decimal.TryParse(Console.ReadLine(), out decimal compressorCost)
-                        || compressorCost < 0)
-                    {
-                        Console.WriteLine("Invalid compressor cost.");
-                        Pause();
-                        return;
-                    }
-
-                    appliance = new Refrigerator(
-                        serial, customer, problem,
-                        DateTime.Now, compressorCost, additionalCost);
+                    specificCost = ReadValidCost("Compressor Cost: ");
                     break;
 
                 case "2":
-                    Console.Write("Parts Cost: ");
-                    if (!decimal.TryParse(Console.ReadLine(), out decimal partsCost)
-                        || partsCost < 0)
-                    {
-                        Console.WriteLine("Invalid parts cost.");
-                        Pause();
-                        return;
-                    }
-
-                    appliance = new WashingMachine(
-                        serial, customer, problem,
-                        DateTime.Now, partsCost, additionalCost);
+                    specificCost = ReadValidCost("Parts Cost: ");
                     break;
 
                 default:
-                    Console.Write("Gas Refill Cost: ");
-                    if (!decimal.TryParse(Console.ReadLine(), out decimal gasCost)
-                        || gasCost < 0)
-                    {
-                        Console.WriteLine("Invalid gas refill cost.");
-                        Pause();
-                        return;
-                    }
+                    specificCost = ReadValidCost("Gas Refill Cost: ");
+                    break;
+            }
 
+            laborCost = ReadValidCost("Labor Cost: ");
+            additionalCost = ReadValidCost("Additional Cost: ");
+
+            Appliance appliance;
+
+            switch (type)
+            {
+                case "1":
+                    appliance = new Refrigerator(
+                        serial, customer, problem,
+                        DateTime.Now, specificCost,
+                        laborCost, additionalCost);
+                    break;
+
+                case "2":
+                    appliance = new WashingMachine(
+                        serial, customer, problem,
+                        DateTime.Now, specificCost,
+                        laborCost, additionalCost);
+                    break;
+
+                default:
                     appliance = new AirConditioner(
                         serial, customer, problem,
-                        DateTime.Now, gasCost, additionalCost);
+                        DateTime.Now, specificCost,
+                        laborCost, additionalCost);
                     break;
             }
 
             center.AddAppliance(appliance);
 
             Console.WriteLine("\nAppliance added successfully!");
-            Console.WriteLine($"Estimated repair cost: {appliance.CalculateRepairCost():0.00}");
+            Console.WriteLine(
+                $"Estimated repair cost: {appliance.CalculateRepairCost():0.00}");
 
             Pause();
+
         }
 
+        // التحقق من صحة التكلفة
+        private static decimal ReadValidCost(string message)
+        {
+            decimal cost;
+
+            while (true)
+            {
+                Console.Write(message);
+
+                if (decimal.TryParse(Console.ReadLine(), out cost)
+                    && ValidationHelper.IsValidCost(cost))
+                {
+                    return cost;
+                }
+
+                Console.WriteLine(
+                    "Invalid cost. Enter a valid non-negative number.");
+            }
+
+        }
         // البحث عن جهاز
         private static void FindAppliance()
         {
